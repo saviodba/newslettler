@@ -26,7 +26,7 @@ app.post('/', (req, res) => {
 
     mailOptions = {
         from: dados.email,
-        to: 'saviodesenv@gmail.com',
+        to: process.env.TO,
         subject: dados.assunto,
         text: `
             Nome: ${dados.nome}
