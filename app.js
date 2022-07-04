@@ -18,29 +18,32 @@ const transporter = nodemailer.createTransport({
 let mailOptions = {}
 let app = express();
 
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+
 app.post('/', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     let dados = req.body;
 
     mailOptions = {
-        from: dados.email,
+        from: dados.n._email,
         to: process.env.TO,
-        subject: dados.assunto,
+        subject: "Portifólio | " + dados.n._assunto,
         text: `
-            Nome: ${dados.nome}
-            Telefone : ${dados.telefone}
-            E-Mail : ${dados.email}
-            Conteudo: ${dados.conteudo}`
+            Nome: ${dados.n._nome}
+            Telefone : ${dados.n._telefone}
+            E-Mail : ${dados.n._email}
+            Conteudo: ${dados.n._conteudo}`
     };
 
     transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
             console.log(err);
-            res.json(400)
+            res.json(500)
         } else {
-            res.json(200)
+            res.json("Email enviado")
             console.log('Email enviado: ' + info.response);
         }
     })
@@ -48,5 +51,5 @@ app.post('/', (req, res) => {
 
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log("Servidor subiu...")
+    console.log("Servidor Online")
 })
